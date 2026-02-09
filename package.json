@@ -1,0 +1,24 @@
+{
+  "name": "cardapio-digital-railway",
+  "version": "1.0.0",
+  "description": "Cardápio Digital para Railway + Supabase",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["cardapio", "digital", "restaurante"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.9",
+    "pg": "^8.11.3",
+    "qrcode": "^1.5.3",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}

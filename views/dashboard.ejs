@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - <%= empresa.nome %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>🍕 Cardápio Digital</h1>
+        <p class="empresa-nome"><%= empresa.nome %></p>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item active">
+          <span class="icon">📊</span>
+          <span>Produtos</span>
+        </a>
+        <a href="/dashboard/configuracoes" class="nav-item">
+          <span class="icon">⚙️</span>
+          <span>Configurações</span>
+        </a>
+        <a href="/<%= empresa.slug %>" target="_blank" class="nav-item">
+          <span class="icon">🌐</span>
+          <span>Ver Cardápio</span>
+        </a>
+        <a href="/logout" class="nav-item logout">
+          <span class="icon">🚪</span>
+          <span>Sair</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <h2>Gerenciar Produtos</h2>
+        <button class="btn-primary" onclick="abrirModalProduto()">+ Novo Produto</button>
+      </header>
+
+      <!-- QR Code Section -->
+      <div class="qrcode-section">
+        <div class="qrcode-card">
+          <div class="qrcode-info">
+            <h3>Seu QR Code</h3>
+            <p>Imprima e coloque nas mesas para seus clientes acessarem o cardápio</p>
+            <div class="url-display">
+              <strong>URL:</strong> <%= urlCardapio %>
+            </div>
+            <button class="btn-outline" onclick="baixarQRCode()">Baixar QR Code</button>
+          </div>
+          <div class="qrcode-image">
+            <img src="<%= qrCodeDataUrl %>" alt="QR Code" id="qrCodeImg">
+          </div>
+        </div>
+      </div>
+
+      <!-- Categorias e Produtos -->
+      <div class="content-section">
+        <div class="section-header">
+          <h3>Categorias e Produtos</h3>
+          <button class="btn-secondary" onclick="abrirModalCategoria()">+ Nova Categoria</button>
+        </div>
+
+        <% if (categorias.length === 0) { %>
+          <div class="empty-state">
+            <p>Você ainda não tem categorias. Crie sua primeira categoria para começar!</p>
+          </div>
+        <% } else { %>
+          <% categorias.forEach(categoria => { %>
+            <div class="categoria-section" data-categoria-id="<%= categoria.id %>">
+              <div class="categoria-header">
+                <h4><%= categoria.nome %></h4>
+                <div class="categoria-actions">
+                  <button class="btn-icon" onclick="editarCategoria(<%= categoria.id %>, '<%= categoria.nome %>')">✏️</button>
+                  <button class="btn-icon" onclick="deletarCategoria(<%= categoria.id %>)">🗑️</button>
+                </div>
+              </div>
+
+              <div class="produtos-grid">
+                <% const produtosCategoria = produtos.filter(p => p.categoria_id === categoria.id); %>
+                <% if (produtosCategoria.length === 0) { %>
+                  <p class="no-products">Nenhum produto nesta categoria</p>
+                <% } else { %>
+                  <% produtosCategoria.forEach(produto => { %>
+                    <div class="produto-card">
+                      <div class="produto-info">
+                        <h5><%= produto.nome %></h5>
+                        <p class="produto-descricao"><%= produto.descricao || 'Sem descrição' %></p>
+                        <p class="produto-preco">R$ <%= produto.preco.toFixed(2).replace('.', ',') %></p>
+                        <span class="produto-status <%= produto.disponivel ? 'disponivel' : 'indisponivel' %>">
+                          <%= produto.disponivel ? '✓ Disponível' : '✗ Indisponível' %>
+                        </span>
+                      </div>
+                      <div class="produto-actions">
+                        <button class="btn-icon" onclick="editarProduto(<%= produto.id %>)">✏️</button>
+                        <button class="btn-icon" onclick="deletarProduto(<%= produto.id %>)">🗑️</button>
+                      </div>
+                    </div>
+                  <% }); %>
+                <% } %>
+              </div>
+            </div>
+          <% }); %>
+        <% } %>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Categoria -->
+  <div id="modalCategoria" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalCategoriaTitle">Nova Categoria</h3>
+        <button class="modal-close" onclick="fecharModalCategoria()">×</button>
+      </div>
+      <form id="formCategoria" onsubmit="salvarCategoria(event)">
+        <input type="hidden" id="categoriaId">
+        <div class="form-group">
+          <label for="categoriaNome">Nome da Categoria *</label>
+          <input type="text" id="categoriaNome" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="fecharModalCategoria()">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Produto -->
+  <div id="modalProduto" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalProdutoTitle">Novo Produto</h3>
+        <button class="modal-close" onclick="fecharModalProduto()">×</button>
+      </div>
+      <form id="formProduto" onsubmit="salvarProduto(event)">
+        <input type="hidden" id="produtoId">
+        <div class="form-group">
+          <label for="produtoNome">Nome do Produto *</label>
+          <input type="text" id="produtoNome" required>
+        </div>
+        <div class="form-group">
+          <label for="produtoDescricao">Descrição</label>
+          <textarea id="produtoDescricao" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="produtoPreco">Preço (R$) *</label>
+          <input type="number" id="produtoPreco" step="0.01" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="produtoCategoria">Categoria *</label>
+          <select id="produtoCategoria" required>
+            <option value="">Selecione uma categoria</option>
+            <% categorias.forEach(cat => { %>
+              <option value="<%= cat.id %>"><%= cat.nome %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="produtoDisponivel" checked>
+            <span>Produto disponível</span>
+          </label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="fecharModalProduto()">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

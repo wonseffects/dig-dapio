@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= empresa.nome %> - Cardápio Digital</title>
+  <link rel="stylesheet" href="/css/cardapio.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --cor-gradiente-inicio: <%= empresa.cor_gradiente_inicio %>;
+      --cor-gradiente-fim: <%= empresa.cor_gradiente_fim %>;
+      --cor-botao: <%= empresa.cor_botao %>;
+      --cor-texto-botao: <%= empresa.cor_texto_botao || '#FFFFFF' %>;
+    }
+  </style>
+</head>
+<body class="cardapio-publico">
+  
+  <!-- Header com Gradiente Personalizado -->
+  <header class="cardapio-header">
+    <div class="header-content">
+      <h1 class="empresa-nome"><%= empresa.nome %></h1>
+      <% if (empresa.telefone) { %>
+        <p class="empresa-info">📞 <%= empresa.telefone %></p>
+      <% } %>
+      <% if (empresa.endereco) { %>
+        <p class="empresa-info">📍 <%= empresa.endereco %></p>
+      <% } %>
+    </div>
+    <div class="header-wave"></div>
+  </header>
+
+  <!-- Menu de Navegação (Categorias) -->
+  <nav class="categorias-nav">
+    <div class="nav-container">
+      <% categorias.forEach(categoria => { %>
+        <a href="#categoria-<%= categoria.id %>" class="categoria-link">
+          <%= categoria.nome %>
+        </a>
+      <% }); %>
+    </div>
+  </nav>
+
+  <!-- Conteúdo Principal -->
+  <main class="cardapio-main">
+    <div class="container">
+      
+      <% if (categorias.length === 0) { %>
+        <div class="empty-state">
+          <p>Este cardápio ainda está sendo preparado...</p>
+          <p>🍕 Em breve teremos delícias por aqui!</p>
+        </div>
+      <% } else { %>
+        
+        <% categorias.forEach(categoria => { %>
+          <% const produtosCategoria = produtosPorCategoria[categoria.id]; %>
+          <% if (produtosCategoria && produtosCategoria.produtos.length > 0) { %>
+            
+            <section class="categoria-section" id="categoria-<%= categoria.id %>">
+              <h2 class="categoria-titulo"><%= categoria.nome %></h2>
+              
+              <div class="produtos-lista">
+                <% produtosCategoria.produtos.forEach(produto => { %>
+                  <div class="produto-item">
+                    <div class="produto-detalhes">
+                      <h3 class="produto-nome"><%= produto.nome %></h3>
+                      <% if (produto.descricao) { %>
+                        <p class="produto-descricao"><%= produto.descricao %></p>
+                      <% } %>
+                      <div class="produto-footer">
+                        <span class="produto-preco">R$ <%= produto.preco.toFixed(2).replace('.', ',') %></span>
+                        <% if (produto.destaque) { %>
+                          <span class="produto-badge">⭐ Destaque</span>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                <% }); %>
+              </div>
+            </section>
+            
+          <% } %>
+        <% }); %>
+        
+      <% } %>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="cardapio-footer">
+    <div class="container">
+      <p>Cardápio Digital - Sempre atualizado 📱</p>
+      <a href="/" class="footer-link">Crie seu cardápio gratuito</a>
+    </div>
+  </footer>
+
+  <script src="/js/cardapio.js"></script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+/* ========================================
+   CARDÁPIO PÚBLICO - ESTILOS
+======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --text-dark: #1A1A2E;
+  --text-light: #666666;
+  --bg-light: #F8F9FA;
+  --white: #FFFFFF;
+  --shadow: 0 4px 12px rgba(0,0,0,0.1);
+  --radius: 16px;
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text-dark);
+  background: var(--bg-light);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+.cardapio-header {
+  background: linear-gradient(135deg, var(--cor-gradiente-inicio), var(--cor-gradiente-fim));
+  color: var(--white);
+  padding: 60px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardapio-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,106.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+  background-size: cover;
+  opacity: 0.2;
+  animation: wave 15s linear infinite;
+}
+
+@keyframes wave {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  animation: fadeInUp 0.8s ease;
+}
+
+.empresa-nome {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  font-family: 'Playfair Display', serif;
+}
+
+.empresa-info {
+  font-size: 16px;
+  margin: 8px 0;
+  opacity: 0.95;
+}
+
+.header-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: var(--white);
+  clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   NAVEGAÇÃO DE CATEGORIAS
+======================================== */
+.categorias-nav {
+  background: var(--white);
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  animation: slideDown 0.5s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cor-gradiente-inicio) transparent;
+}
+
+.nav-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.nav-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nav-container::-webkit-scrollbar-thumb {
+  background: var(--cor-gradiente-inicio);
+  border-radius: 4px;
+}
+
+.categoria-link {
+  display: inline-block;
+  padding: 10px 24px;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  border-radius: 24px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.categoria-link:hover,
+.categoria-link.active {
+  background: linear-gradient(135deg, var(--cor-gradiente-inicio), var(--cor-gradiente-fim));
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ========================================
+   CONTEÚDO PRINCIPAL
+======================================== */
+.cardapio-main {
+  padding: 48px 0 80px;
+}
+
+.categoria-section {
+  margin-bottom: 60px;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.categoria-titulo {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 32px;
+  color: var(--text-dark);
+  padding-bottom: 16px;
+  border-bottom: 3px solid;
+  border-image: linear-gradient(90deg, var(--cor-gradiente-inicio), var(--cor-gradiente-fim)) 1;
+}
+
+.produtos-lista {
+  display: grid;
+  gap: 20px;
+}
+
+.produto-item {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  animation: fadeInUp 0.5s ease;
+}
+
+.produto-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  border-color: var(--cor-gradiente-inicio);
+}
+
+.produto-detalhes {
+  width: 100%;
+}
+
+.produto-nome {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-dark);
+}
+
+.produto-descricao {
+  font-size: 15px;
+  color: var(--text-light);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.produto-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.produto-preco {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--cor-botao);
+  background: linear-gradient(135deg, var(--cor-gradiente-inicio), var(--cor-gradiente-fim));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.produto-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: linear-gradient(135deg, var(--cor-gradiente-inicio), var(--cor-gradiente-fim));
+  color: var(--white);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+.empty-state {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--text-light);
+}
+
+.empty-state p {
+  font-size: 18px;
+  margin: 12px 0;
+}
+
+.empty-state p:first-child {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+.cardapio-footer {
+  background: var(--text-dark);
+  color: var(--white);
+  padding: 32px 0;
+  text-align: center;
+}
+
+.cardapio-footer p {
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.footer-link {
+  color: var(--white);
+  text-decoration: underline;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.footer-link:hover {
+  opacity: 1;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+@media (max-width: 768px) {
+  .cardapio-header {
+    padding: 40px 24px 60px;
+  }
+  
+  .empresa-nome {
+    font-size: 32px;
+  }
+  
+  .empresa-info {
+    font-size: 14px;
+  }
+  
+  .categoria-titulo {
+    font-size: 26px;
+  }
+  
+  .produto-nome {
+    font-size: 20px;
+  }
+  
+  .produto-preco {
+    font-size: 24px;
+  }
+  
+  .produto-item {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .empresa-nome {
+    font-size: 28px;
+  }
+  
+  .categoria-titulo {
+    font-size: 22px;
+  }
+  
+  .produto-nome {
+    font-size: 18px;
+  }
+  
+  .produto-preco {
+    font-size: 22px;
+  }
+  
+  .produto-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ========================================
+   ANIMAÇÕES DE ENTRADA
+======================================== */
+.produto-item:nth-child(1) { animation-delay: 0.1s; }
+.produto-item:nth-child(2) { animation-delay: 0.2s; }
+.produto-item:nth-child(3) { animation-delay: 0.3s; }
+.produto-item:nth-child(4) { animation-delay: 0.4s; }
+.produto-item:nth-child(5) { animation-delay: 0.5s; }

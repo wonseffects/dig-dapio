@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações - <%= empresa.nome %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>🍕 Cardápio Digital</h1>
+        <p class="empresa-nome"><%= empresa.nome %></p>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item">
+          <span class="icon">📊</span>
+          <span>Produtos</span>
+        </a>
+        <a href="/dashboard/configuracoes" class="nav-item active">
+          <span class="icon">⚙️</span>
+          <span>Configurações</span>
+        </a>
+        <a href="/<%= empresa.slug %>" target="_blank" class="nav-item">
+          <span class="icon">🌐</span>
+          <span>Ver Cardápio</span>
+        </a>
+        <a href="/logout" class="nav-item logout">
+          <span class="icon">🚪</span>
+          <span>Sair</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <h2>Configurações</h2>
+      </header>
+
+      <% if (success) { %>
+        <div class="alert alert-success">
+          <%= success %>
+        </div>
+      <% } %>
+
+      <% if (error) { %>
+        <div class="alert alert-error">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <div class="config-container">
+        <form method="POST" action="/dashboard/configuracoes" class="config-form">
+          
+          <!-- Informações da Empresa -->
+          <div class="config-section">
+            <h3>Informações da Empresa</h3>
+            
+            <div class="form-group">
+              <label for="nome">Nome do Estabelecimento</label>
+              <input type="text" id="nome" name="nome" value="<%= empresa.nome %>" required>
+            </div>
+
+            <div class="form-group">
+              <label for="telefone">Telefone</label>
+              <input type="tel" id="telefone" name="telefone" value="<%= empresa.telefone || '' %>">
+            </div>
+
+            <div class="form-group">
+              <label for="endereco">Endereço</label>
+              <input type="text" id="endereco" name="endereco" value="<%= empresa.endereco || '' %>">
+            </div>
+
+            <div class="form-group">
+              <label>URL do Cardápio</label>
+              <div class="url-readonly">
+                <%= empresa.slug %>
+              </div>
+              <small>Esta é a URL única do seu cardápio. Não pode ser alterada.</small>
+            </div>
+          </div>
+
+          <!-- Personalização Visual -->
+          <div class="config-section">
+            <h3>Personalização Visual do Cardápio</h3>
+            <p class="section-description">
+              Personalize as cores do seu cardápio para combinar com a identidade visual da sua marca
+            </p>
+
+            <div class="color-grid">
+              <div class="form-group">
+                <label for="cor_gradiente_inicio">Cor do Gradiente (Início)</label>
+                <div class="color-input-group">
+                  <input 
+                    type="color" 
+                    id="cor_gradiente_inicio" 
+                    name="cor_gradiente_inicio" 
+                    value="<%= empresa.cor_gradiente_inicio %>"
+                    onchange="atualizarPreview()"
+                  >
+                  <input 
+                    type="text" 
+                    value="<%= empresa.cor_gradiente_inicio %>" 
+                    id="cor_gradiente_inicio_text"
+                    onchange="sincronizarCor('cor_gradiente_inicio', this.value)"
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cor_gradiente_fim">Cor do Gradiente (Fim)</label>
+                <div class="color-input-group">
+                  <input 
+                    type="color" 
+                    id="cor_gradiente_fim" 
+                    name="cor_gradiente_fim" 
+                    value="<%= empresa.cor_gradiente_fim %>"
+                    onchange="atualizarPreview()"
+                  >
+                  <input 
+                    type="text" 
+                    value="<%= empresa.cor_gradiente_fim %>" 
+                    id="cor_gradiente_fim_text"
+                    onchange="sincronizarCor('cor_gradiente_fim', this.value)"
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cor_botao">Cor dos Botões</label>
+                <div class="color-input-group">
+                  <input 
+                    type="color" 
+                    id="cor_botao" 
+                    name="cor_botao" 
+                    value="<%= empresa.cor_botao %>"
+                    onchange="atualizarPreview()"
+                  >
+                  <input 
+                    type="text" 
+                    value="<%= empresa.cor_botao %>" 
+                    id="cor_botao_text"
+                    onchange="sincronizarCor('cor_botao', this.value)"
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cor_texto_botao">Cor do Texto dos Botões</label>
+                <div class="color-input-group">
+                  <input 
+                    type="color" 
+                    id="cor_texto_botao" 
+                    name="cor_texto_botao" 
+                    value="<%= empresa.cor_texto_botao || '#FFFFFF' %>"
+                    onchange="atualizarPreview()"
+                  >
+                  <input 
+                    type="text" 
+                    value="<%= empresa.cor_texto_botao || '#FFFFFF' %>" 
+                    id="cor_texto_botao_text"
+                    onchange="sincronizarCor('cor_texto_botao', this.value)"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-section">
+              <h4>Preview do Cardápio</h4>
+              <div class="preview-container" id="previewContainer">
+                <div class="preview-header" id="previewHeader">
+                  <h3>Meu Restaurante</h3>
+                </div>
+                <div class="preview-content">
+                  <div class="preview-product">
+                    <h5>Pizza Margherita</h5>
+                    <p>Molho de tomate, mussarela e manjericão</p>
+                    <span class="preview-price">R$ 45,00</span>
+                  </div>
+                  <button class="preview-button" id="previewButton">Ver mais</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <a href="/dashboard" class="btn-secondary">Cancelar</a>
+            <button type="submit" class="btn-primary">Salvar Configurações</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/configuracoes.js"></script>
+</body>
+</html>
