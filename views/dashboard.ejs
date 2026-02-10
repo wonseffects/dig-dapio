@@ -92,7 +92,7 @@
                       <div class="produto-info">
                         <h5><%= produto.nome %></h5>
                         <p class="produto-descricao"><%= produto.descricao || 'Sem descrição' %></p>
-                        <p class="produto-preco">R$ <%= produto.preco.toFixed(2).replace('.', ',') %></p>
+                        <p class="produto-preco">R$ <%= parseFloat(produto.preco || 0).toFixed(2).replace('.', ',') %></p>
                         <span class="produto-status <%= produto.disponivel ? 'disponivel' : 'indisponivel' %>">
                           <%= produto.disponivel ? '✓ Disponível' : '✗ Indisponível' %>
                         </span>
