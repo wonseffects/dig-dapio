@@ -64,7 +64,7 @@ async function deletarCategoria(id) {
   }
   
   try {
-    const response = await fetch(`/dashboard/api/categorias/${id}`, {
+    const response = await fetch(`/api/categorias/${id}`, {
       method: 'DELETE'
     });
     
@@ -179,7 +179,7 @@ async function deletarProduto(id) {
   }
   
   try {
-    const response = await fetch(`/dashboard/api/produtos/${id}`, {
+    const response = await fetch(`/api/produtos/${id}`, {
       method: 'DELETE'
     });
     
