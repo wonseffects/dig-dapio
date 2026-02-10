@@ -70,7 +70,7 @@
                         <p class="produto-descricao"><%= produto.descricao %></p>
                       <% } %>
                       <div class="produto-footer">
-                        <span class="produto-preco">R$ <%= produto.preco.toFixed(2).replace('.', ',') %></span>
+                        <p class="produto-preco">R$ <%= parseFloat(produto.preco || 0).toFixed(2).replace('.', ',') %></p>
                         <% if (produto.destaque) { %>
                           <span class="produto-badge">⭐ Destaque</span>
                         <% } %>
