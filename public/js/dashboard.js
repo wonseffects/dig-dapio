@@ -27,7 +27,7 @@ async function salvarCategoria(event) {
   const id = document.getElementById('categoriaId').value;
   const nome = document.getElementById('categoriaNome').value;
   
-  const url = id ? `/dashboard/api/categorias/${id}` : '/dashboard/api/categorias';
+  const url = id ? `/api/categorias/${id}` : '/api/categorias';
   const method = id ? 'PUT' : 'POST';
   
   try {
@@ -142,7 +142,7 @@ async function salvarProduto(event) {
   const categoria_id = document.getElementById('produtoCategoria').value;
   const disponivel = document.getElementById('produtoDisponivel').checked;
   
-  const url = id ? `/dashboard/api/produtos/${id}` : '/dashboard/api/produtos';
+  const url = id ? `/api/produtos/${id}` : '/api/produtos';
   const method = id ? 'PUT' : 'POST';
   
   try {
