@@ -2,11 +2,13 @@ const dns = require('dns');
 dns.setDefaultResultOrder('ipv4first');
 const { Pool } = require('pg');
 
-// Configuração PostgreSQL (Supabase)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
+
+module.exports = pool;
+
 
 // Testar conexão
 pool.query('SELECT NOW()', (err, res) => {
