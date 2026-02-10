@@ -32,11 +32,19 @@ async function salvarCategoria(event) {
   
   try {
     const response = await fetch(url, {
-      method: method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, ordem: 0 })
-    });
-    
+    method: method,
+    headers: { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({ nome: nome, ordem: 0 })
+  });
+    if (!response.ok) {
+  const errorText = await response.text();
+  console.error('Erro do servidor:', errorText);
+  alert('Erro ao salvar categoria: ' + errorText);
+  return;
+}   
     const data = await response.json();
     
     if (data.success) {
